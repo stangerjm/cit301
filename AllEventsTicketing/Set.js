@@ -30,7 +30,11 @@ function Set() {
 
 	this.union = function(listA, listB) {
 
-	   var resultList = new Array();
+	   var resultList = [];
+
+        if(listA === null || listB === null){
+            return null;
+        }
 
 	   var sDif = this.symetricDifference(listA, listB);
 	   var intersect = this.intersection(listA, listB);
@@ -55,6 +59,7 @@ function Set() {
 	this.relativeCompliment = function(listA, listB) {
 
 	   var resultList = [];
+
 
 	   if(listA === null || listB === null){
 		   return null;
@@ -81,6 +86,10 @@ function Set() {
 	this.symetricDifference = function(listA, listB) {
 
 	   var resultList = [];
+
+        if(listA === null || listB === null){
+            return null;
+        }
 
 	   var relA = this.relativeCompliment(listA, listB);
 	   var relB = this.relativeCompliment(listB, listA);
