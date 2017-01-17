@@ -1,8 +1,8 @@
 function Set() {
-	
-	
+
+
 	this.intersection = function(listA, listB) {
-    
+
 	   var resultList = [];
 
 	   if(listA === null || listB === null){
@@ -25,15 +25,27 @@ function Set() {
 
 	   return resultList;
 	}
-    
-    
-    
+
+
+
 	this.union = function(listA, listB) {
 
 	   var resultList = new Array();
-       
 
-	   
+	   var sDif = this.symetricDifference(listA, listB);
+	   var intersect = this.intersection(listA, listB);
+
+	   var sDifLen = sDif.length;
+	   var intersectLen = intersect.length;
+
+	   for(var i = 0; i < sDifLen; i++){
+	   	  resultList.push(sDif[i]);
+	   }
+
+	   for(var i = 0; i < intersectLen; i++){
+	   	  resultList.push(intersect[i]);
+	   }
+
 	   return resultList;
 	}
 
@@ -42,14 +54,25 @@ function Set() {
 
 	this.relativeCompliment = function(listA, listB) {
 
-	   var resultList = new Array();
+	   var resultList = [];
 
 	   if(listA === null || listB === null){
 		   return null;
 	   }
 
-	   
-       
+
+        var seen = [];
+        for ( var i = 0; i < listB.length; i++) {
+            seen[listB[i]] = true;
+        }
+
+        for ( var i = 0; i < listA.length; i++) {
+            if (!seen[listA[i]]) {
+                resultList.push(listA[i]);
+            }
+        }
+
+
 	   return resultList;
 	}
 
@@ -57,11 +80,23 @@ function Set() {
 
 	this.symetricDifference = function(listA, listB) {
 
-	   var resultList = new Array();
-       
+	   var resultList = [];
+
+	   var relA = this.relativeCompliment(listA, listB);
+	   var relB = this.relativeCompliment(listB, listA);
+	   var relBLen = relB.length;
+	   var relALen = relA.length;
+
+	   for(var i = 0; i < relALen; i++){
+	   	  resultList.push(relA[i]);
+	   }
+
+	   for(var i = 0; i < relB.length; i++){
+	   	  resultList.push(relB[i]);
+	   }
 
 	   return resultList;
-	}	
-	
+	}
+
 
 }
