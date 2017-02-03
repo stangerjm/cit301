@@ -13,6 +13,6 @@
     </div>
   </div>
   <div class="panel-body">
-    <cms-contact-item></cms-contact-item>
+    <cms-contact-item *ngFor="let group of groupContacts" [contact]="group"></cms-contact-item>
   </div>
 </div>
