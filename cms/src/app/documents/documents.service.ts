@@ -16,6 +16,10 @@ export class DocumentsService {
     return this.documents[idx];
   }
 
+  deleteDocument(document: Document){
+    this.documents.splice(this.documents.indexOf(document), 1);
+  }
+
   constructor() { }
 
 }

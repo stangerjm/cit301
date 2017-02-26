@@ -1,23 +1,37 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <div class="row">
-      <div class="col-md-12">
-        <h4>{{selectedContact?.name}}</h4>
+    <h3>{{contact?.name}}</h3>
+    <div class="row pad-all">
+      <div class="clear-fix pull-left">
+        <img class="img-responsive" src="{{contact?.imageUrl}}" style="max-height: 80px;"/>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <img class="img-responsive" src="{{selectedContact?.imageUrl}}" alt="" style="max-height: 100px">
-      </div>
-      <div class="col-md-8">
-        <button type="button" class="btn btn-success">Edit</button>
-        <button type="button" class="btn btn-danger">Delete</button>
+      <div class="pull-right" style="margin-top: 2rem; ">
+        <button class="btn btn-primary" [routerLink]="[contactIdx + '/edit']">Edit</button>
+        <button class="btn btn-danger" (click)="onDelete()">Delete</button>
       </div>
     </div>
   </div>
+
   <div class="panel-body">
-    <p>Email Address: {{selectedContact?.email}}</p>
-    <p>Phone Number: {{selectedContact?.phone}}</p>
+    <div class="pad-left-right">
+      <div class="row" *ngIf="contact?.email">
+        <label>Email:</label>
+        <span class="label-value">{{contact?.email}}</span>
+      </div>
+
+      <div class="row" *ngIf="contact?.phone">
+        <label>Phone:</label>
+        <span class="label-value">{{contact?.phone}}</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <label for="groupContacts" style="margin-left: 1rem;">Group contacts:</label>
+      <div class="col-xs-12" id="groupContacts">
+        <cms-contact-item></cms-contact-item>
+      </div>
+    </div>
+
   </div>
 </div>
 
