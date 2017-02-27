@@ -7,14 +7,10 @@ import { Contact } from '../contact';
   templateUrl: './contact-item.component.html',
   styleUrls: ['./contact-item.component.css']
 })
-export class ContactItemComponent implements OnInit {
+export class ContactItemComponent{
 
   @Input() contact: Contact;
   @Input() contactIdx: number;
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

@@ -12,26 +12,33 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 export class ContactsDetailComponent implements OnInit, OnDestroy {
 
-  @Input() selectedContact: Contact;
   private subscription: Subscription;
-  private contactIdx: number;
-  private contact: Contact;
+  contactIdx: number;
+  contact: Contact;
+  contactGroup: Contact[];
 
-  constructor(private contactGroup: Contact[],
-              private contactService: ContactsService,
+  constructor(private contactService: ContactsService,
               private router: Router,
               private route: ActivatedRoute) { }
 
+
+  /* subscribing to changes to make sure app updates */
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
-        this.contactIdx = params['id'];
-        this.selectedContact = this.contactService.getContact(this.contactIdx);
-        this.contactGroup = this.selectedContact.group;
+        this.contactIdx = params['idx'];
+        this.contact = this.contactService.getContact(this.contactIdx);
+        this.contactGroup = this.contact.group;
       }
     )
   }
 
+  onDelete(){
+    this.contactService.deleteContact(this.contact);
+    this.router.navigate(['/contacts']);
+  }
+
+  /* unsubscribing to those changes to prevent memory leaks */
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }

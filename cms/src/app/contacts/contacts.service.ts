@@ -72,4 +72,9 @@ export class ContactsService {
     return this.contacts[idx];
   }
 
+  //allow user to delete by getting rid of the element in the array
+  deleteContact(contact: Contact){
+    this.contacts.splice(this.contacts.indexOf(contact), 1);
+  }
+
 }

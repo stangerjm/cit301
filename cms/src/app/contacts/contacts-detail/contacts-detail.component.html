@@ -6,7 +6,7 @@
         <img class="img-responsive" src="{{contact?.imageUrl}}" style="max-height: 80px;"/>
       </div>
       <div class="pull-right" style="margin-top: 2rem; ">
-        <button class="btn btn-primary" [routerLink]="[contactIdx + '/edit']">Edit</button>
+        <button class="btn btn-primary" [routerLink]="['../edit']">Edit</button>
         <button class="btn btn-danger" (click)="onDelete()">Delete</button>
       </div>
     </div>
@@ -25,13 +25,13 @@
       </div>
     </div>
 
-    <div class="row">
+    <!-- display contact group -->
+    <div class="row" *ngIf="contactGroup && contactGroup.length > 0">
       <label for="groupContacts" style="margin-left: 1rem;">Group contacts:</label>
       <div class="col-xs-12" id="groupContacts">
-        <cms-contact-item></cms-contact-item>
+        <cms-contact-item *ngFor="let contact of contactGroup" [contact]="contact"></cms-contact-item>
       </div>
     </div>
 
   </div>
 </div>
-

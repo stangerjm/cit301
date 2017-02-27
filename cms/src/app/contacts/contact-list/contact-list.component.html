@@ -11,7 +11,12 @@
 
   </div>
   <div class="panel-body">
-    <cms-contact-item *ngFor="let contact of contacts; let i = index" [contactIdx]="i" [contact]="contact" (click)="onSelected(contact)"></cms-contact-item>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- loop through the contact items to pass the index number which will be grabbed by the router -->
+        <cms-contact-item *ngFor="let contact of contacts; let i = index" [contact]="contact" [contactIdx]="i"></cms-contact-item>
+      </div>
+    </div>
   </div>
 </div>
 
