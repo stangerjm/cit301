@@ -18,4 +18,9 @@ export class MessagesService {
     return this.messages[idx];
   }
 
+  addMessage(message: Message){
+    console.log(message);
+    this.messages.push(message);
+  }
+
 }

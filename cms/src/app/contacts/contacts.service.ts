@@ -5,9 +5,13 @@ import { Contact } from './contact';
 @Injectable()
 export class ContactsService {
 
+  currentContact: Contact;
+
   contacts: Contact[] = [];
 
-  constructor() { }
+  constructor() {
+    this.currentContact = new Contact("23", "James Stanger", "jamesstanger987@gmail.com", "360-485-9925", "http://www.servicedeskshow.com/wp-content/uploads/James-Stanger-CompTIA-08.06.16-Keynote-1.30pm-09.06.16-T3-3.30pm-e1458741088986.jpg", null);
+  }
 
   getContacts() {
     // individual contacts
@@ -70,6 +74,10 @@ export class ContactsService {
 
   getContact(idx: number){
     return this.contacts[idx];
+  }
+
+  getCurrentContact(){
+    return this.currentContact;
   }
 
   //allow user to delete by getting rid of the element in the array
