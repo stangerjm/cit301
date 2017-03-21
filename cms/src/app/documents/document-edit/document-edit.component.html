@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
 
-    <form id="document-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <form id="document-edit" (ngSubmit)="onSubmit(f.value)" #f="ngForm">
       <div class="row">
 
         <div class="col-sm-12 form-group">
@@ -15,7 +15,7 @@
             name="title"
             required
             #title="ngModel"
-            [ngModel]="oldDocument?.title">
+            [ngModel]="oldDocument?.name">
         </div>
 
         <div class="col-sm-12 form-group">
@@ -41,7 +41,7 @@
             name="documentUrl"
             required
             #documentUrl="ngModel"
-            [ngModel]="oldDocument?.documentUrl">
+            [ngModel]="oldDocument?.url">
           <div class="btn-warning" *ngIf="f.touched && !f.valid">Please enter some value</div>
         </div>
       </div>

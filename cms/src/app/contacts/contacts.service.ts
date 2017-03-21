@@ -1,15 +1,22 @@
-import { Injectable } from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 
 import { Contact } from './contact';
+import {Http, Response, Headers} from "@angular/http";
+import 'rxjs/Rx';
 
 @Injectable()
 export class ContactsService {
 
   currentContact: Contact;
+  currentContactId: string;
+  getContactEmitter = new EventEmitter<Contact[]>();
+
 
   contacts: Contact[] = [];
 
-  constructor() {
+  constructor(private http: Http) {
+    this.initContacts();
+    this.currentContactId = '1';
     this.currentContact = new Contact("23", "James Stanger", "jamesstanger987@gmail.com", "360-485-9925", "http://www.servicedeskshow.com/wp-content/uploads/James-Stanger-CompTIA-08.06.16-Keynote-1.30pm-09.06.16-T3-3.30pm-e1458741088986.jpg", null);
   }
 
@@ -83,6 +90,62 @@ export class ContactsService {
   //allow user to delete by getting rid of the element in the array
   deleteContact(contact: Contact){
     this.contacts.splice(this.contacts.indexOf(contact), 1);
+  }
+
+  addContact(contact: Contact){
+    if(!contact)
+      return;
+    this.contacts.push(contact);
+    this.contacts = this.contacts.sort(this.compareNames);
+  }
+
+  updateContact(oldContact: Contact, newContact: Contact){
+    if(!oldContact || !newContact){
+      return;
+    }
+
+    this.contacts[this.contacts.indexOf(oldContact)] = newContact;
+    this.contacts = this.contacts.sort(this.compareNames);
+  }
+
+  deleteNContact(contact: Contact){
+    if(!contact){
+      return;
+    }
+
+    const pos = this.contacts.indexOf(contact);
+    if(pos<0){
+      return;
+    }
+
+    this.contacts.splice(pos, 1);
+    this.contacts = this.contacts.sort(this.compareNames);
+  }
+
+  initContacts(){
+    this.http.get('https://stangerjmcms-4075f.firebaseio.com/contacts.json').map(
+      (response: Response) => response.json()
+    ).subscribe(
+      (data: Contact[]) => {
+        this.contacts = data;
+        this.currentContact = this.getContactById("7");
+        this.contacts = this.contacts.sort(this.compareNames);
+        this.getContactEmitter.emit(this.contacts);
+      }
+    );
+  }
+
+
+  storeContacts(){
+    const body = JSON.stringify(this.contacts);
+    const header = new Headers({
+      'Content-Type' : 'application/json'
+    });
+    return this.http.put('https://stangerjmcms-4075f.firebaseio.com/contacts.json', body, {headers: header});
+  }
+
+  getContactById(id: string): Contact{
+    return this.contacts.find((contact: Contact) => contact.contactId === id);
   }
 
 }
