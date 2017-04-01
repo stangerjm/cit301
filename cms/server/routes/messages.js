@@ -5,6 +5,7 @@ var Message = require('../models/message');
 var Contact = require('../models/contact');
 
 router.get('/', function(req, res, next){
+  //changed
   Message.find().populate('sender').exec(function(err, message){
     if(err){
       return res.status(500).json({
