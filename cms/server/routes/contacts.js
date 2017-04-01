@@ -20,7 +20,7 @@ router.get('/', function(req, res, next){
 
 
 router.post('/', function(req, res, next){
-  var maxContactId = sequenceGenerator.nextId("contacts");
+  var maxContactId = sequenceGenerator.nextId("maxContactsId");
 
   var groupIds = [];
   var oneGroup = req.body.group;
@@ -49,7 +49,7 @@ router.post('/', function(req, res, next){
       }
 
   var contact = new Contact({
-    id: maxContactId,
+    contactId: maxContactId,
     name: req.body.name,
     email: req.body.email,
     phone: req.body.phone,

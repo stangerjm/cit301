@@ -49,7 +49,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
       newContact.contactId = this.contact.contactId;
       this.cs.updateContact(this.contact, newContact).subscribe();
     } else {
-      this.cs.addContact(newContact);
+      this.cs.addContact(newContact).subscribe();
     }
 
     this.router.navigate(['contacts']);

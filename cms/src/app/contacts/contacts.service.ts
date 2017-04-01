@@ -107,7 +107,15 @@ export class ContactsService {
       return;
     this.contacts.push(contact);
     this.contacts = this.contacts.sort(this.compareNames);
-    this.storeContacts();
+
+    const body = JSON.stringify(contact);
+    const headers = new Headers({'Content-Type': 'application/json'})
+    return this.http.post('http://localhost:3000/contacts', body, {headers: headers}).map((response: Response) => {
+      const result = response.json();
+    })
+      .catch((error: Response) => Observable.throw(error.json()));
+
+    //this.storeContacts();
   }
 
   updateContact(oldContact: Contact, newContact: Contact){

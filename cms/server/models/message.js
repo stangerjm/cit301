@@ -5,7 +5,7 @@ var schema = new Schema({
   id: {type: Number, required: true},
   subject: {type: String},
   text: {type: String, required: true},
-  sender: [{type: Schema.Types.ObjectId, ref: 'Contact', required: true}]
+  sender: {type: Schema.Types.ObjectId, ref: 'Contact', required: true}
 });
 
 module.exports = mongoose.model('Message', schema);
