@@ -3,6 +3,7 @@ import {Injectable, EventEmitter} from '@angular/core';
 import { Contact } from './contact';
 import {Http, Response, Headers} from "@angular/http";
 import 'rxjs/Rx';
+import {Observable} from "rxjs";
 
 @Injectable()
 export class ContactsService {
@@ -15,12 +16,24 @@ export class ContactsService {
   contacts: Contact[] = [];
 
   constructor(private http: Http) {
-    this.initContacts();
+    //this.initContacts();
     this.currentContactId = '1';
-    this.currentContact = new Contact("23", "James Stanger", "jamesstanger987@gmail.com", "360-485-9925", "http://www.servicedeskshow.com/wp-content/uploads/James-Stanger-CompTIA-08.06.16-Keynote-1.30pm-09.06.16-T3-3.30pm-e1458741088986.jpg", null);
+    this.currentContact = new Contact(23, "James Stanger", "jamesstanger987@gmail.com", "360-485-9925", "http://www.servicedeskshow.com/wp-content/uploads/James-Stanger-CompTIA-08.06.16-Keynote-1.30pm-09.06.16-T3-3.30pm-e1458741088986.jpg", null);
   }
 
   getContacts() {
+    return this.http.get('http://localhost:3000/contacts').map(
+      (response: Response) => {
+        const contacts: Contact[] = response.json().obj;
+        let transformedContacts: Contact[] = [];
+        for(let contact of contacts){
+          transformedContacts.push(new Contact(contact.contactId, contact.name, contact.email, contact.phone, contact.imageUrl, contact.group));
+        }
+        this.contacts = transformedContacts;
+        return transformedContacts;
+      }).catch((error: Response) => Observable.throw(JSON.stringify(error)));
+
+    /*
     // individual contacts
     this.contacts[0] = new Contact("1", "Rex Barzee", "barzeer@byui.edu", "208-496-3768",
       "../../images/barzeer.jpg", null);
@@ -64,7 +77,7 @@ export class ContactsService {
     // sort by name
     this.contacts = this.contacts.sort(this.compareNames);
 
-    return this.contacts;
+    return this.contacts;*/
   }
 
 
@@ -87,16 +100,14 @@ export class ContactsService {
     return this.currentContact;
   }
 
-  //allow user to delete by getting rid of the element in the array
-  deleteContact(contact: Contact){
-    this.contacts.splice(this.contacts.indexOf(contact), 1);
-  }
+
 
   addContact(contact: Contact){
     if(!contact)
       return;
     this.contacts.push(contact);
     this.contacts = this.contacts.sort(this.compareNames);
+    this.storeContacts();
   }
 
   updateContact(oldContact: Contact, newContact: Contact){
@@ -106,6 +117,12 @@ export class ContactsService {
 
     this.contacts[this.contacts.indexOf(oldContact)] = newContact;
     this.contacts = this.contacts.sort(this.compareNames);
+
+    const body = JSON.stringify(newContact);
+    const headers = new Headers({'Content-Type': 'application/json'});
+    return this.http.patch('http://localhost:3000/contacts/' + newContact.contactId, body, {headers: headers}).map((response: Response) => response.json())
+      .catch((error: Response) => Observable.throw(error.json()));
+    //this.storeContacts();
   }
 
   deleteNContact(contact: Contact){
@@ -120,8 +137,11 @@ export class ContactsService {
 
     this.contacts.splice(pos, 1);
     this.contacts = this.contacts.sort(this.compareNames);
-  }
 
+    return this.http.delete('http://localhost:3000/contacts/' + contact.contactId).map((response: Response) => response.json())
+      .catch((error: Response) => Observable.throw(error.json()));
+  }
+/*
   initContacts(){
     this.http.get('https://stangerjmcms-4075f.firebaseio.com/contacts.json').map(
       (response: Response) => response.json()
@@ -134,17 +154,17 @@ export class ContactsService {
       }
     );
   }
-
+*/
 
   storeContacts(){
     const body = JSON.stringify(this.contacts);
     const header = new Headers({
       'Content-Type' : 'application/json'
     });
-    return this.http.put('https://stangerjmcms-4075f.firebaseio.com/contacts.json', body, {headers: header});
+    return this.http.put('https://stangerjmcms-4075f.firebaseio.com/contacts.json', body, {headers: header}).subscribe();
   }
 
-  getContactById(id: string): Contact{
+  getContactById(id: number): Contact{
     return this.contacts.find((contact: Contact) => contact.contactId === id);
   }
 

@@ -28,13 +28,16 @@ export class ContactsDetailComponent implements OnInit, OnDestroy {
       (params: any) => {
         this.contactIdx = params['idx'];
         this.contact = this.contactService.getContact(this.contactIdx);
+        console.log(this.contact);
         this.contactGroup = this.contact.group;
       }
     )
   }
 
   onDelete(){
-    this.contactService.deleteContact(this.contact);
+    this.contactService.deleteNContact(this.contact).subscribe(
+      result => console.log(result)
+    );
     this.router.navigate(['/contacts']);
   }
 

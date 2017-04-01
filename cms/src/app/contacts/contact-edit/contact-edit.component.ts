@@ -47,7 +47,7 @@ export class ContactEditComponent implements OnInit, OnDestroy {
     let newContact = new Contact(null, value.name, value.email, value.phone, value.imgUrl, this.groupContacts);
     if(this.editMode){
       newContact.contactId = this.contact.contactId;
-      this.cs.updateContact(this.contact, newContact);
+      this.cs.updateContact(this.contact, newContact).subscribe();
     } else {
       this.cs.addContact(newContact);
     }

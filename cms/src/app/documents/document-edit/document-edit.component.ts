@@ -43,9 +43,9 @@ export class DocumentEditComponent implements OnInit, OnDestroy {
     let newDocument = new Document(null, value.title, value.description, value.documentUrl, null);
     if(this.editMode){
       newDocument.id = this.oldDocument.id;
-      this.ds.updateDocument(this.oldDocument, newDocument);
+      this.ds.updateDocument(this.oldDocument, newDocument).subscribe();
     } else {
-      this.ds.addDocument(newDocument);
+      this.ds.addDocument(newDocument).subscribe();
     }
 
     this.router.navigate(['documents']);
